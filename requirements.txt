@@ -1,0 +1,7 @@
+scapy
+tqdm
+xpinyin
+matplotlib
+numpy
+Pillow
+lxml
