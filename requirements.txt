@@ -5,3 +5,6 @@ matplotlib
 numpy
 Pillow
 lxml
+pyshark
+pandas
+dpkt
