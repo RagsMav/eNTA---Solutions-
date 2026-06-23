@@ -42,8 +42,8 @@ def process_pcap_to_png(input_pcap, output_dir, max_images=1000):
 
 if __name__ == "__main__":
     # Base directories
-    base_raw = "/Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/raw"
-    base_processed = "/Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed/train"
+    base_raw = "/Model/BTRFormer/Dat/raw"
+    base_processed = "/Model/BTRFormer/Dat/processed/train"
 
     # Map the specific PCAP files you downloaded to their output folders
     # Update "Normal.pcap" etc. to the exact names of the files you put in Dat/raw/
