@@ -8,3 +8,4 @@ lxml
 pyshark
 pandas
 dpkt
+scikit-learn 
