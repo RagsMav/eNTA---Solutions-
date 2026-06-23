@@ -62,6 +62,16 @@ mkdir -p BTRFormer/Data/processed/train/VPN
 # 2. Run the script pointing to the correct 'Data' output folder
 python BTR_generator.py --flows_pcap_path /BTRFormer/Data/splitcap/ --output_dir /BTRFormer/Data/processed/train/
 ```
+
+Instead of the BTRFormer/Data/processed/train/. write write the full path, where you want to create the 3 processed folders
+<br>
+Move the balance_and_split.py to processed folder
+<br>
+Now run the balance_and_split.py to make the data even
+```
+python balance_and_split.py --train train --test test --delete-excess
+```
+
 Instead of the BTRFormer/Data/processed/train/. write write the full path, where you want to create the 3 processed folders
 <br>
 Now run the Bash script run_btrformer_training.bash.
