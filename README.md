@@ -1,46 +1,22 @@
-# BTRFormer
+# How to Train Yourself
+<br>
 
-This repository contains the code for the paper:
-BTRFormer: Hierarchical Learning of Encrypted Traffic Using a Masked Autoencoder with Block-Based Traffic Representation.
-In 2025 IEEE 33rd International Conference on Network Protocols (ICNP)
-
-# Overview
-<img width="2998" height="1314" alt="image" src="https://github.com/user-attachments/assets/138ae867-a46b-43cc-bb08-b5cd76ac3294" />
-The overview of BTRFormer framework.
-
-## Usage
-
-### Install 
-
-```sh
-git clone git@github.com:yyyjn/BTRFormer.git
+Open a terminal window and navigate to BTRFormer repo ( after copying this repo)
+<br>
 ```
-
-**Note**
-
-- Python 3.9 is required.
-
-
-## Contact
-If you have any questions or suggestions, feel free to contact:
-
-- [Junnan Yin](https://github.com/yyyjn/yyyjn.github.io) (yinjn2023@zgclab.edu.cn)
-
-## Citation
-If you find this repo useful, please cite our paper.
-```bibtex
-@inproceedings{yin2025btrformer,
-  title={BTRFormer: Hierarchical Learning of Encrypted Traffic Using a Masked Autoencoder with Block-Based Traffic Representation},
-  author={Yin, Junnan and Cui, Lei and Hao, Zhiyu and Sun, Jiawei and Liu, Peng and Yun, Xiaochun},
-  booktitle={2025 IEEE 33rd International Conference on Network Protocols (ICNP)},
-  pages={1--12},
-  year={2025},
-  organization={IEEE}
-}
+mkdir Data
+cd Data
+mkdir raw
+cd raw
+mkdir Normal
+mkdir Tor
+mkdir VPN
 ```
+<br>
 
-Contributions via pull requests are welcome and appreciated.
+Run these commands one after another
+<br>
+when adding files make sure to name them as exactly "profile_1_Tor", "profile_2_VPN" and "profile_3_Normal" and their extensions pcap 
+add these pcaps to respective folders in the Document.
 
-## Acknowledgements
-
-We would like to thank all the authors of the referenced papers.
+Here only 3 classes because in 
