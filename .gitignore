@@ -6,6 +6,7 @@ venv/
 *.zip
 *.pcap
 Dat/
+output/
 Data/
 .DS_Store
 __pycache__/

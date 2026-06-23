@@ -38,7 +38,7 @@ MODEL:
   NAME: btrformer
   NUM_CLASSES: 3
   PRETRAINED: ''
-  RESUME: output/btrformer/default/ckpt_epoch_29.pth
+  RESUME: ''
   SIMMIM:
     NORM_TARGET:
       ENABLE: false
