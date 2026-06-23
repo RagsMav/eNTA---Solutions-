@@ -16,6 +16,10 @@ mkdir VPN
 
 Run these commands one after another
 <br>
+Now update the paths in the following files
+<br>
+1) in data_generation.py -> root_dir at the end of the file -> to your path for the Data folder
+2) in config.py -> 
 when adding files make sure to name them as exactly "profile_1_Tor", "profile_2_VPN" and "profile_3_Normal" and their extensions pcap 
 add these pcaps to respective folders in the Document.
 
@@ -41,6 +45,6 @@ python3 data_generation.py
 This should create split your pcaps and create a splitcap folder, where your 1 large pcap would be split into flows
 <br>
 
-The BTR_generator.py
+
 
 
