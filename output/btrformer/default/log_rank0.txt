@@ -1,0 +1,2800 @@
+[2026-06-19 17:59:10 btrformer] (main_ft.py 399): INFO Full config saved to output/btrformer/default/config.json
+[2026-06-19 17:59:10 btrformer] (main_ft.py 402): INFO AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: ''
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: ''
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 128
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed
+  IMG_SIZE: 32
+  INTERPOLATION: ''
+  MASK_PATCH_SIZE: 2
+  MASK_RATIO: 0.9
+  NUM_WORKERS: 4
+  PIN_MEMORY: true
+  ZIP_MODE: false
+ENABLE_AMP: true
+EVAL_MODE: false
+FUSED_LAYERNORM: false
+FUSED_WINDOW_PROCESS: false
+LOCAL_RANK: 0
+MODEL:
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NAME: btrformer
+  NUM_CLASSES: 3
+  PRETRAINED: ''
+  RESUME: ''
+  SIMMIM:
+    NORM_TARGET:
+      ENABLE: false
+      PATCH_SIZE: 47
+  SWIN:
+    APE: false
+    DEPTHS:
+    - 2
+    - 2
+    - 6
+    - 2
+    EMBED_DIM: 96
+    IN_CHANS: 1
+    MLP_RATIO: 4.0
+    NUM_HEADS:
+    - 3
+    - 6
+    - 12
+    - 24
+    PATCH_NORM: true
+    PATCH_SIZE: 2
+    QKV_BIAS: true
+    QK_SCALE: null
+    WINDOW_SIZE: 2
+  TYPE: swin
+OUTPUT: output/btrformer/default
+PRINT_FREQ: 10
+SAVE_FREQ: 100
+SEED: 0
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: true
+  BASE_LR: 0.000125
+  CLIP_GRAD: 5.0
+  EPOCHS: 30
+  LAYER_DECAY: 1.0
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+    MULTISTEPS: []
+    NAME: cosine
+    WARMUP_PREFIX: true
+  MIN_LR: 1.25e-06
+  MOE:
+    SAVE_MASTER: false
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 5
+  WARMUP_LR: 1.25e-07
+  WEIGHT_DECAY: 0.05
+distributed: false
+
+[2026-06-19 17:59:10 btrformer] (main_ft.py 96): INFO Creating model:swin/btrformer
+[2026-06-19 17:59:11 btrformer] (main_ft.py 99): INFO SwinTransformer(
+  (patch_embed): PatchEmbed_raw(
+    (proj): Conv2d(1, 96, kernel_size=(2, 2), stride=(2, 2))
+    (norm): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): BasicLayer(
+      dim=96, input_resolution=(16, 16), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): Identity()
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.009)
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(16, 16), dim=96
+        (reduction): Linear(in_features=384, out_features=192, bias=False)
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (1): BasicLayer(
+      dim=192, input_resolution=(8, 8), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.018)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.027)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(8, 8), dim=192
+        (reduction): Linear(in_features=768, out_features=384, bias=False)
+        (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (2): BasicLayer(
+      dim=384, input_resolution=(4, 4), depth=6
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.036)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.045)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (2): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.055)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (3): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.064)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (4): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.073)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (5): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.082)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(4, 4), dim=384
+        (reduction): Linear(in_features=1536, out_features=768, bias=False)
+        (norm): LayerNorm((1536,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (3): BasicLayer(
+      dim=768, input_resolution=(2, 2), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.091)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.100)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+    )
+  )
+  (avgpool): AdaptiveAvgPool1d(output_size=1)
+  (head): Linear(in_features=768, out_features=3, bias=True)
+  (fc_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+)
+[2026-06-19 17:59:11 btrformer] (main_ft.py 111): INFO number of params: 27495357
+[2026-06-19 17:59:11 btrformer] (main_ft.py 114): INFO number of GFLOPs: 0.35524224
+[2026-06-19 17:59:11 btrformer] (utils_simmim.py 83): INFO All checkpoints founded in output/btrformer/default: []
+[2026-06-19 17:59:11 btrformer] (main_ft.py 140): INFO no checkpoint found in output/btrformer/default, ignoring auto resume
+[2026-06-19 17:59:11 btrformer] (main_ft.py 158): INFO Start training
+[2026-06-19 17:59:11 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07, 1.25e-07]
+[2026-06-19 17:59:13 btrformer] (main_ft.py 244): INFO Train: [0/30][0/6]	eta 0:00:14 lr 0.000000	time 2.4178 (2.4178)	loss 1.1751 (1.1751)	grad_norm 10.7964 (10.7964)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 17:59:34 btrformer] (main_ft.py 253): INFO EPOCH 0 training takes 0:00:23
+[2026-06-19 17:59:34 btrformer] (utils_simmim.py 62): INFO output/btrformer/default/ckpt_epoch_0.pth saving......
+[2026-06-19 17:59:35 btrformer] (utils_simmim.py 64): INFO output/btrformer/default/ckpt_epoch_0.pth saved !!!
+[2026-06-19 17:59:37 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.831 (1.831)	Loss 1.2041 (1.2041)	Acc@1 32.500 (32.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 17:59:42 btrformer] (main_ft.py 319): INFO  * Acc@1 32.500 Acc@5 100.000
+[2026-06-19 17:59:42 btrformer] (main_ft.py 320): INFO * Pre 0.2194 Rec 0.3250 F1 0.1769
+[2026-06-19 17:59:42 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.00      0.00      0.00        40
+         Tor       0.33      0.03      0.05        40
+         VPN       0.32      0.95      0.48        40
+
+    accuracy                           0.33       120
+   macro avg       0.22      0.33      0.18       120
+weighted avg       0.22      0.33      0.18       120
+
+[2026-06-19 17:59:42 btrformer] (main_ft.py 329): INFO 
+[[ 0  0 40]
+ [ 0  1 39]
+ [ 0  2 38]]
+[2026-06-19 17:59:42 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 32.5%
+[2026-06-19 17:59:42 btrformer] (main_ft.py 170): INFO Max accuracy: 32.50%
+[2026-06-19 17:59:42 btrformer] (main_ft.py 172): INFO Max f1: 17.69%
+[2026-06-19 17:59:42 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05, 2.09375e-05]
+[2026-06-19 17:59:44 btrformer] (main_ft.py 244): INFO Train: [1/30][0/6]	eta 0:00:11 lr 0.000025	time 1.9709 (1.9709)	loss 1.1670 (1.1670)	grad_norm 21.6507 (21.6507)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:00:05 btrformer] (main_ft.py 253): INFO EPOCH 1 training takes 0:00:23
+[2026-06-19 18:00:06 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.785 (1.785)	Loss 0.8938 (0.8938)	Acc@1 81.667 (81.667)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:00:11 btrformer] (main_ft.py 319): INFO  * Acc@1 81.667 Acc@5 100.000
+[2026-06-19 18:00:11 btrformer] (main_ft.py 320): INFO * Pre 0.8318 Rec 0.8167 F1 0.8090
+[2026-06-19 18:00:11 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.83      1.00      0.91        40
+         Tor       0.92      0.60      0.73        40
+         VPN       0.74      0.85      0.79        40
+
+    accuracy                           0.82       120
+   macro avg       0.83      0.82      0.81       120
+weighted avg       0.83      0.82      0.81       120
+
+[2026-06-19 18:00:11 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 4 24 12]
+ [ 4  2 34]]
+[2026-06-19 18:00:11 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 81.7%
+[2026-06-19 18:00:11 btrformer] (main_ft.py 170): INFO Max accuracy: 81.67%
+[2026-06-19 18:00:11 btrformer] (main_ft.py 172): INFO Max f1: 80.90%
+[2026-06-19 18:00:11 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05, 4.5912500000000005e-05]
+[2026-06-19 18:00:13 btrformer] (main_ft.py 244): INFO Train: [2/30][0/6]	eta 0:00:11 lr 0.000050	time 1.9370 (1.9370)	loss 0.9384 (0.9384)	grad_norm 9.8402 (9.8402)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:00:34 btrformer] (main_ft.py 253): INFO EPOCH 2 training takes 0:00:23
+[2026-06-19 18:00:36 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.781 (1.781)	Loss 0.6762 (0.6762)	Acc@1 88.333 (88.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:00:41 btrformer] (main_ft.py 319): INFO  * Acc@1 88.333 Acc@5 100.000
+[2026-06-19 18:00:41 btrformer] (main_ft.py 320): INFO * Pre 0.8942 Rec 0.8833 F1 0.8820
+[2026-06-19 18:00:41 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.82      1.00      0.90        40
+         Tor       0.90      0.88      0.89        40
+         VPN       0.97      0.78      0.86        40
+
+    accuracy                           0.88       120
+   macro avg       0.89      0.88      0.88       120
+weighted avg       0.89      0.88      0.88       120
+
+[2026-06-19 18:00:41 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 4 35  1]
+ [ 5  4 31]]
+[2026-06-19 18:00:41 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 88.3%
+[2026-06-19 18:00:41 btrformer] (main_ft.py 170): INFO Max accuracy: 88.33%
+[2026-06-19 18:00:41 btrformer] (main_ft.py 172): INFO Max f1: 88.20%
+[2026-06-19 18:00:41 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05, 7.088750000000001e-05]
+[2026-06-19 18:00:43 btrformer] (main_ft.py 244): INFO Train: [3/30][0/6]	eta 0:00:11 lr 0.000075	time 1.9278 (1.9278)	loss 0.9154 (0.9154)	grad_norm 7.5951 (7.5951)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:01:04 btrformer] (main_ft.py 253): INFO EPOCH 3 training takes 0:00:22
+[2026-06-19 18:01:06 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.786 (1.786)	Loss 0.4099 (0.4099)	Acc@1 90.833 (90.833)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:01:11 btrformer] (main_ft.py 319): INFO  * Acc@1 90.833 Acc@5 100.000
+[2026-06-19 18:01:11 btrformer] (main_ft.py 320): INFO * Pre 0.9138 Rec 0.9083 F1 0.9078
+[2026-06-19 18:01:11 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.85      1.00      0.92        40
+         Tor       0.94      0.85      0.89        40
+         VPN       0.95      0.88      0.91        40
+
+    accuracy                           0.91       120
+   macro avg       0.91      0.91      0.91       120
+weighted avg       0.91      0.91      0.91       120
+
+[2026-06-19 18:01:11 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 4 34  2]
+ [ 3  2 35]]
+[2026-06-19 18:01:11 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 90.8%
+[2026-06-19 18:01:11 btrformer] (main_ft.py 170): INFO Max accuracy: 90.83%
+[2026-06-19 18:01:11 btrformer] (main_ft.py 172): INFO Max f1: 90.78%
+[2026-06-19 18:01:11 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05, 9.58625e-05]
+[2026-06-19 18:01:13 btrformer] (main_ft.py 244): INFO Train: [4/30][0/6]	eta 0:00:11 lr 0.000100	time 1.9293 (1.9293)	loss 0.8486 (0.8486)	grad_norm 2.6748 (2.6748)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:01:34 btrformer] (main_ft.py 253): INFO EPOCH 4 training takes 0:00:22
+[2026-06-19 18:01:36 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.779 (1.779)	Loss 0.5540 (0.5540)	Acc@1 83.333 (83.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:01:41 btrformer] (main_ft.py 319): INFO  * Acc@1 83.333 Acc@5 100.000
+[2026-06-19 18:01:41 btrformer] (main_ft.py 320): INFO * Pre 0.8845 Rec 0.8333 F1 0.8208
+[2026-06-19 18:01:41 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.68      1.00      0.81        40
+         VPN       1.00      0.50      0.67        40
+
+    accuracy                           0.83       120
+   macro avg       0.88      0.83      0.82       120
+weighted avg       0.88      0.83      0.82       120
+
+[2026-06-19 18:01:41 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1 19 20]]
+[2026-06-19 18:01:41 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 83.3%
+[2026-06-19 18:01:41 btrformer] (main_ft.py 170): INFO Max accuracy: 90.83%
+[2026-06-19 18:01:41 btrformer] (main_ft.py 172): INFO Max f1: 90.78%
+[2026-06-19 18:01:41 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002, 0.00012083750000000002]
+[2026-06-19 18:01:43 btrformer] (main_ft.py 244): INFO Train: [5/30][0/6]	eta 0:00:11 lr 0.000125	time 1.9178 (1.9178)	loss 0.8788 (0.8788)	grad_norm 11.1626 (11.1626)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:02:04 btrformer] (main_ft.py 253): INFO EPOCH 5 training takes 0:00:22
+[2026-06-19 18:02:06 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.770 (1.770)	Loss 0.4036 (0.4036)	Acc@1 93.333 (93.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:02:11 btrformer] (main_ft.py 319): INFO  * Acc@1 93.333 Acc@5 100.000
+[2026-06-19 18:02:11 btrformer] (main_ft.py 320): INFO * Pre 0.9397 Rec 0.9333 F1 0.9313
+[2026-06-19 18:02:11 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.89      1.00      0.94        40
+         Tor       0.93      1.00      0.96        40
+         VPN       1.00      0.80      0.89        40
+
+    accuracy                           0.93       120
+   macro avg       0.94      0.93      0.93       120
+weighted avg       0.94      0.93      0.93       120
+
+[2026-06-19 18:02:11 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 5  3 32]]
+[2026-06-19 18:02:11 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 93.3%
+[2026-06-19 18:02:11 btrformer] (main_ft.py 170): INFO Max accuracy: 93.33%
+[2026-06-19 18:02:11 btrformer] (main_ft.py 172): INFO Max f1: 93.13%
+[2026-06-19 18:02:11 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192, 0.00012466104227591192]
+[2026-06-19 18:02:13 btrformer] (main_ft.py 244): INFO Train: [6/30][0/6]	eta 0:00:11 lr 0.000125	time 1.9309 (1.9309)	loss 0.7290 (0.7290)	grad_norm 5.2096 (5.2096)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:02:34 btrformer] (main_ft.py 253): INFO EPOCH 6 training takes 0:00:22
+[2026-06-19 18:02:35 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.782 (1.782)	Loss 0.3902 (0.3902)	Acc@1 85.833 (85.833)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:02:40 btrformer] (main_ft.py 319): INFO  * Acc@1 85.833 Acc@5 100.000
+[2026-06-19 18:02:40 btrformer] (main_ft.py 320): INFO * Pre 0.8872 Rec 0.8583 F1 0.8500
+[2026-06-19 18:02:40 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.75      1.00      0.86        40
+         Tor       0.91      0.97      0.94        40
+         VPN       1.00      0.60      0.75        40
+
+    accuracy                           0.86       120
+   macro avg       0.89      0.86      0.85       120
+weighted avg       0.89      0.86      0.85       120
+
+[2026-06-19 18:02:40 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 1 39  0]
+ [12  4 24]]
+[2026-06-19 18:02:40 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 85.8%
+[2026-06-19 18:02:40 btrformer] (main_ft.py 170): INFO Max accuracy: 93.33%
+[2026-06-19 18:02:40 btrformer] (main_ft.py 172): INFO Max f1: 93.13%
+[2026-06-19 18:02:40 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678, 0.00012336519461527678]
+[2026-06-19 18:02:42 btrformer] (main_ft.py 244): INFO Train: [7/30][0/6]	eta 0:00:11 lr 0.000123	time 1.9233 (1.9233)	loss 0.8349 (0.8349)	grad_norm 7.5646 (7.5646)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:03:03 btrformer] (main_ft.py 253): INFO EPOCH 7 training takes 0:00:22
+[2026-06-19 18:03:05 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.779 (1.779)	Loss 0.2803 (0.2803)	Acc@1 94.167 (94.167)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:03:10 btrformer] (main_ft.py 319): INFO  * Acc@1 94.167 Acc@5 100.000
+[2026-06-19 18:03:10 btrformer] (main_ft.py 320): INFO * Pre 0.9471 Rec 0.9417 F1 0.9403
+[2026-06-19 18:03:10 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.95      1.00      0.98        40
+         Tor       0.89      1.00      0.94        40
+         VPN       1.00      0.82      0.90        40
+
+    accuracy                           0.94       120
+   macro avg       0.95      0.94      0.94       120
+weighted avg       0.95      0.94      0.94       120
+
+[2026-06-19 18:03:10 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 2  5 33]]
+[2026-06-19 18:03:10 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 94.2%
+[2026-06-19 18:03:10 btrformer] (main_ft.py 170): INFO Max accuracy: 94.17%
+[2026-06-19 18:03:10 btrformer] (main_ft.py 172): INFO Max f1: 94.03%
+[2026-06-19 18:03:10 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108, 0.0001211193230998108]
+[2026-06-19 18:03:12 btrformer] (main_ft.py 244): INFO Train: [8/30][0/6]	eta 0:00:11 lr 0.000121	time 1.9214 (1.9214)	loss 0.8849 (0.8849)	grad_norm 5.4482 (5.4482)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:03:33 btrformer] (main_ft.py 253): INFO EPOCH 8 training takes 0:00:22
+[2026-06-19 18:03:35 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.783 (1.783)	Loss 0.2346 (0.2346)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:03:40 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:03:40 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:03:40 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:03:40 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:03:40 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:03:40 btrformer] (main_ft.py 170): INFO Max accuracy: 97.50%
+[2026-06-19 18:03:40 btrformer] (main_ft.py 172): INFO Max f1: 97.48%
+[2026-06-19 18:03:40 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314, 0.0001179588464649314]
+[2026-06-19 18:03:42 btrformer] (main_ft.py 244): INFO Train: [9/30][0/6]	eta 0:00:11 lr 0.000117	time 1.9433 (1.9433)	loss 0.4998 (0.4998)	grad_norm 2.6397 (2.6397)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:04:03 btrformer] (main_ft.py 253): INFO EPOCH 9 training takes 0:00:23
+[2026-06-19 18:04:05 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.764 (1.764)	Loss 0.1805 (0.1805)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:04:10 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:04:10 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:04:10 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:04:10 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:04:10 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:04:10 btrformer] (main_ft.py 170): INFO Max accuracy: 97.50%
+[2026-06-19 18:04:10 btrformer] (main_ft.py 172): INFO Max f1: 97.48%
+[2026-06-19 18:04:10 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794, 0.00011393360731514794]
+[2026-06-19 18:04:12 btrformer] (main_ft.py 244): INFO Train: [10/30][0/6]	eta 0:00:11 lr 0.000113	time 1.9244 (1.9244)	loss 0.6142 (0.6142)	grad_norm 2.4097 (2.4097)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:04:33 btrformer] (main_ft.py 253): INFO EPOCH 10 training takes 0:00:22
+[2026-06-19 18:04:35 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.790 (1.790)	Loss 0.1963 (0.1963)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:04:40 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:04:40 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:04:40 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:04:40 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:04:40 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:04:40 btrformer] (main_ft.py 170): INFO Max accuracy: 97.50%
+[2026-06-19 18:04:40 btrformer] (main_ft.py 172): INFO Max f1: 97.48%
+[2026-06-19 18:04:40 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379, 0.00010910708607641379]
+[2026-06-19 18:04:42 btrformer] (main_ft.py 244): INFO Train: [11/30][0/6]	eta 0:00:11 lr 0.000108	time 1.9410 (1.9410)	loss 0.5579 (0.5579)	grad_norm 2.1780 (2.1780)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:05:03 btrformer] (main_ft.py 253): INFO EPOCH 11 training takes 0:00:23
+[2026-06-19 18:05:04 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.783 (1.783)	Loss 0.1620 (0.1620)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:05:09 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:05:09 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:05:09 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.95      1.00      0.98        40
+         Tor       0.98      1.00      0.99        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:05:09 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 2  1 37]]
+[2026-06-19 18:05:09 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:05:09 btrformer] (main_ft.py 170): INFO Max accuracy: 97.50%
+[2026-06-19 18:05:09 btrformer] (main_ft.py 172): INFO Max f1: 97.48%
+[2026-06-19 18:05:09 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779, 0.00010355539987188779]
+[2026-06-19 18:05:11 btrformer] (main_ft.py 244): INFO Train: [12/30][0/6]	eta 0:00:11 lr 0.000103	time 1.9396 (1.9396)	loss 0.8510 (0.8510)	grad_norm 5.1083 (5.1083)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:05:32 btrformer] (main_ft.py 253): INFO EPOCH 12 training takes 0:00:23
+[2026-06-19 18:05:34 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.789 (1.789)	Loss 0.2653 (0.2653)	Acc@1 95.833 (95.833)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:05:39 btrformer] (main_ft.py 319): INFO  * Acc@1 95.833 Acc@5 100.000
+[2026-06-19 18:05:39 btrformer] (main_ft.py 320): INFO * Pre 0.9614 Rec 0.9583 F1 0.9582
+[2026-06-19 18:05:39 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.91      1.00      0.95        40
+         Tor       0.97      0.97      0.97        40
+         VPN       1.00      0.90      0.95        40
+
+    accuracy                           0.96       120
+   macro avg       0.96      0.96      0.96       120
+weighted avg       0.96      0.96      0.96       120
+
+[2026-06-19 18:05:39 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 1 39  0]
+ [ 3  1 36]]
+[2026-06-19 18:05:39 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 95.8%
+[2026-06-19 18:05:39 btrformer] (main_ft.py 170): INFO Max accuracy: 97.50%
+[2026-06-19 18:05:39 btrformer] (main_ft.py 172): INFO Max f1: 97.48%
+[2026-06-19 18:05:39 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05, 9.736610210943191e-05]
+[2026-06-19 18:05:41 btrformer] (main_ft.py 244): INFO Train: [13/30][0/6]	eta 0:00:11 lr 0.000096	time 1.9338 (1.9338)	loss 0.6347 (0.6347)	grad_norm 4.3392 (4.3392)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:06:02 btrformer] (main_ft.py 253): INFO EPOCH 13 training takes 0:00:23
+[2026-06-19 18:06:04 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.766 (1.766)	Loss 0.1809 (0.1809)	Acc@1 95.000 (95.000)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:06:09 btrformer] (main_ft.py 319): INFO  * Acc@1 95.000 Acc@5 100.000
+[2026-06-19 18:06:09 btrformer] (main_ft.py 320): INFO * Pre 0.9534 Rec 0.9500 F1 0.9496
+[2026-06-19 18:06:09 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.91      1.00      0.95        40
+         Tor       0.95      0.97      0.96        40
+         VPN       1.00      0.88      0.93        40
+
+    accuracy                           0.95       120
+   macro avg       0.95      0.95      0.95       120
+weighted avg       0.95      0.95      0.95       120
+
+[2026-06-19 18:06:09 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 1 39  0]
+ [ 3  2 35]]
+[2026-06-19 18:06:09 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 95.0%
+[2026-06-19 18:06:09 btrformer] (main_ft.py 170): INFO Max accuracy: 97.50%
+[2026-06-19 18:06:09 btrformer] (main_ft.py 172): INFO Max f1: 97.48%
+[2026-06-19 18:06:09 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05, 9.063680171206738e-05]
+[2026-06-19 18:06:11 btrformer] (main_ft.py 244): INFO Train: [14/30][0/6]	eta 0:00:11 lr 0.000089	time 1.9328 (1.9328)	loss 0.6342 (0.6342)	grad_norm 3.2922 (3.2922)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:06:32 btrformer] (main_ft.py 253): INFO EPOCH 14 training takes 0:00:22
+[2026-06-19 18:06:34 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.772 (1.772)	Loss 0.1675 (0.1675)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:06:39 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:06:39 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:06:39 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:06:39 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:06:39 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:06:39 btrformer] (main_ft.py 170): INFO Max accuracy: 98.33%
+[2026-06-19 18:06:39 btrformer] (main_ft.py 172): INFO Max f1: 98.33%
+[2026-06-19 18:06:39 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05, 8.347362376694984e-05]
+[2026-06-19 18:06:41 btrformer] (main_ft.py 244): INFO Train: [15/30][0/6]	eta 0:00:11 lr 0.000082	time 1.9289 (1.9289)	loss 0.3857 (0.3857)	grad_norm 1.1427 (1.1427)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:07:02 btrformer] (main_ft.py 253): INFO EPOCH 15 training takes 0:00:22
+[2026-06-19 18:07:04 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.768 (1.768)	Loss 0.1303 (0.1303)	Acc@1 99.167 (99.167)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:07:09 btrformer] (main_ft.py 319): INFO  * Acc@1 99.167 Acc@5 100.000
+[2026-06-19 18:07:09 btrformer] (main_ft.py 320): INFO * Pre 0.9919 Rec 0.9917 F1 0.9917
+[2026-06-19 18:07:09 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.98      1.00      0.99        40
+         VPN       1.00      0.97      0.99        40
+
+    accuracy                           0.99       120
+   macro avg       0.99      0.99      0.99       120
+weighted avg       0.99      0.99      0.99       120
+
+[2026-06-19 18:07:09 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  1 39]]
+[2026-06-19 18:07:09 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 99.2%
+[2026-06-19 18:07:09 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:07:09 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:07:09 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05, 7.598953586934886e-05]
+[2026-06-19 18:07:11 btrformer] (main_ft.py 244): INFO Train: [16/30][0/6]	eta 0:00:11 lr 0.000075	time 1.9233 (1.9233)	loss 0.6288 (0.6288)	grad_norm 0.8648 (0.8648)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:07:32 btrformer] (main_ft.py 253): INFO EPOCH 16 training takes 0:00:22
+[2026-06-19 18:07:33 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.769 (1.769)	Loss 0.1996 (0.1996)	Acc@1 99.167 (99.167)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:07:38 btrformer] (main_ft.py 319): INFO  * Acc@1 99.167 Acc@5 100.000
+[2026-06-19 18:07:38 btrformer] (main_ft.py 320): INFO * Pre 0.9919 Rec 0.9917 F1 0.9917
+[2026-06-19 18:07:38 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.98      1.00      0.99        40
+         VPN       1.00      0.97      0.99        40
+
+    accuracy                           0.99       120
+   macro avg       0.99      0.99      0.99       120
+weighted avg       0.99      0.99      0.99       120
+
+[2026-06-19 18:07:38 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  1 39]]
+[2026-06-19 18:07:38 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 99.2%
+[2026-06-19 18:07:38 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:07:38 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:07:38 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05, 6.830256655618703e-05]
+[2026-06-19 18:07:40 btrformer] (main_ft.py 244): INFO Train: [17/30][0/6]	eta 0:00:11 lr 0.000067	time 1.9415 (1.9415)	loss 0.7022 (0.7022)	grad_norm 1.3212 (1.3212)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:08:01 btrformer] (main_ft.py 253): INFO EPOCH 17 training takes 0:00:23
+[2026-06-19 18:08:03 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.793 (1.793)	Loss 0.1506 (0.1506)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:08:08 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:08:08 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:08:08 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:08:08 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:08:08 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:08:08 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:08:08 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:08:08 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05, 6.053394392550578e-05]
+[2026-06-19 18:08:10 btrformer] (main_ft.py 244): INFO Train: [18/30][0/6]	eta 0:00:11 lr 0.000059	time 1.9335 (1.9335)	loss 0.4534 (0.4534)	grad_norm 0.9363 (0.9363)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:08:31 btrformer] (main_ft.py 253): INFO EPOCH 18 training takes 0:00:23
+[2026-06-19 18:08:33 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.802 (1.802)	Loss 0.1408 (0.1408)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:08:38 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:08:38 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:08:38 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:08:38 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:08:38 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:08:38 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:08:38 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:08:38 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05, 5.280618379694116e-05]
+[2026-06-19 18:08:40 btrformer] (main_ft.py 244): INFO Train: [19/30][0/6]	eta 0:00:11 lr 0.000052	time 1.9473 (1.9473)	loss 0.6128 (0.6128)	grad_norm 1.3424 (1.3424)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:09:01 btrformer] (main_ft.py 253): INFO EPOCH 19 training takes 0:00:23
+[2026-06-19 18:09:03 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.804 (1.804)	Loss 0.1922 (0.1922)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:09:08 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:09:08 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:09:08 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:09:08 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:09:08 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:09:08 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:09:08 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:09:08 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05, 4.5241157564060814e-05]
+[2026-06-19 18:09:10 btrformer] (main_ft.py 244): INFO Train: [20/30][0/6]	eta 0:00:11 lr 0.000044	time 1.9455 (1.9455)	loss 0.7601 (0.7601)	grad_norm 1.0889 (1.0889)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:09:31 btrformer] (main_ft.py 253): INFO EPOCH 20 training takes 0:00:23
+[2026-06-19 18:09:33 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.799 (1.799)	Loss 0.1444 (0.1444)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:09:38 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:09:38 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:09:38 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:09:38 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:09:38 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:09:38 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:09:38 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:09:38 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05, 3.795817020968486e-05]
+[2026-06-19 18:09:40 btrformer] (main_ft.py 244): INFO Train: [21/30][0/6]	eta 0:00:11 lr 0.000037	time 1.9456 (1.9456)	loss 0.7121 (0.7121)	grad_norm 2.7494 (2.7494)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:10:01 btrformer] (main_ft.py 253): INFO EPOCH 21 training takes 0:00:23
+[2026-06-19 18:10:03 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.798 (1.798)	Loss 0.1422 (0.1422)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:10:08 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:10:08 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:10:08 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:10:08 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:10:08 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:10:08 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:10:08 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:10:08 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05, 3.1072078795037576e-05]
+[2026-06-19 18:10:09 btrformer] (main_ft.py 244): INFO Train: [22/30][0/6]	eta 0:00:11 lr 0.000030	time 1.9304 (1.9304)	loss 0.6139 (0.6139)	grad_norm 1.1884 (1.1884)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:10:31 btrformer] (main_ft.py 253): INFO EPOCH 22 training takes 0:00:22
+[2026-06-19 18:10:32 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.793 (1.793)	Loss 0.1802 (0.1802)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:10:37 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:10:37 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:10:37 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:10:37 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:10:37 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:10:37 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:10:37 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:10:37 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05, 2.469148109527955e-05]
+[2026-06-19 18:10:39 btrformer] (main_ft.py 244): INFO Train: [23/30][0/6]	eta 0:00:11 lr 0.000024	time 1.9378 (1.9378)	loss 0.3950 (0.3950)	grad_norm 1.7689 (1.7689)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:11:00 btrformer] (main_ft.py 253): INFO EPOCH 23 training takes 0:00:23
+[2026-06-19 18:11:02 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.786 (1.786)	Loss 0.1491 (0.1491)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:11:07 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:11:07 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:11:07 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:11:07 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:11:07 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:11:07 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:11:07 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:11:07 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05, 1.8917002947720307e-05]
+[2026-06-19 18:11:09 btrformer] (main_ft.py 244): INFO Train: [24/30][0/6]	eta 0:00:11 lr 0.000018	time 1.9603 (1.9603)	loss 0.7042 (0.7042)	grad_norm 1.1618 (1.1618)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:11:30 btrformer] (main_ft.py 253): INFO EPOCH 24 training takes 0:00:23
+[2026-06-19 18:11:32 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.790 (1.790)	Loss 0.1421 (0.1421)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:11:37 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:11:37 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:11:37 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:11:37 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:11:37 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:11:37 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:11:37 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:11:37 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05, 1.3839711322252864e-05]
+[2026-06-19 18:11:39 btrformer] (main_ft.py 244): INFO Train: [25/30][0/6]	eta 0:00:11 lr 0.000013	time 1.9336 (1.9336)	loss 0.6845 (0.6845)	grad_norm 1.3297 (1.3297)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:12:00 btrformer] (main_ft.py 253): INFO EPOCH 25 training takes 0:00:22
+[2026-06-19 18:12:02 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.789 (1.789)	Loss 0.1399 (0.1399)	Acc@1 97.500 (97.500)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:12:07 btrformer] (main_ft.py 319): INFO  * Acc@1 97.500 Acc@5 100.000
+[2026-06-19 18:12:07 btrformer] (main_ft.py 320): INFO * Pre 0.9760 Rec 0.9750 F1 0.9748
+[2026-06-19 18:12:07 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      1.00      0.99        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.93      0.96        40
+
+    accuracy                           0.97       120
+   macro avg       0.98      0.97      0.97       120
+weighted avg       0.98      0.97      0.97       120
+
+[2026-06-19 18:12:07 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 1  2 37]]
+[2026-06-19 18:12:07 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 97.5%
+[2026-06-19 18:12:07 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:12:07 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:12:07 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06, 9.539678140837868e-06]
+[2026-06-19 18:12:09 btrformer] (main_ft.py 244): INFO Train: [26/30][0/6]	eta 0:00:11 lr 0.000009	time 1.9434 (1.9434)	loss 0.7069 (0.7069)	grad_norm 1.0330 (1.0330)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:12:30 btrformer] (main_ft.py 253): INFO EPOCH 26 training takes 0:00:23
+[2026-06-19 18:12:32 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.788 (1.788)	Loss 0.1426 (0.1426)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:12:37 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:12:37 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:12:37 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:12:37 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:12:37 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:12:37 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:12:37 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:12:37 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06, 6.084717495461524e-06]
+[2026-06-19 18:12:39 btrformer] (main_ft.py 244): INFO Train: [27/30][0/6]	eta 0:00:11 lr 0.000006	time 1.9569 (1.9569)	loss 0.7299 (0.7299)	grad_norm 0.8923 (0.8923)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:13:00 btrformer] (main_ft.py 253): INFO EPOCH 27 training takes 0:00:23
+[2026-06-19 18:13:02 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.801 (1.801)	Loss 0.1464 (0.1464)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:13:07 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:13:07 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:13:07 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:13:07 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:13:07 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:13:07 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:13:07 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:13:07 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06, 3.529316179394905e-06]
+[2026-06-19 18:13:08 btrformer] (main_ft.py 244): INFO Train: [28/30][0/6]	eta 0:00:11 lr 0.000003	time 1.9616 (1.9616)	loss 0.8335 (0.8335)	grad_norm 1.1640 (1.1640)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:13:30 btrformer] (main_ft.py 253): INFO EPOCH 28 training takes 0:00:23
+[2026-06-19 18:13:31 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.799 (1.799)	Loss 0.1474 (0.1474)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:13:36 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:13:36 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:13:36 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:13:36 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:13:36 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:13:36 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:13:36 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:13:36 btrformer] (main_ft.py 183): INFO Current learning rate for different parameter groups: [1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06, 1.913774397915097e-06]
+[2026-06-19 18:13:38 btrformer] (main_ft.py 244): INFO Train: [29/30][0/6]	eta 0:00:11 lr 0.000002	time 1.9581 (1.9581)	loss 0.3740 (0.3740)	grad_norm 1.0093 (1.0093)	loss_scale 1.0000 (1.0000)	mem 0MB
+[2026-06-19 18:13:59 btrformer] (main_ft.py 253): INFO EPOCH 29 training takes 0:00:23
+[2026-06-19 18:13:59 btrformer] (utils_simmim.py 62): INFO output/btrformer/default/ckpt_epoch_29.pth saving......
+[2026-06-19 18:14:00 btrformer] (utils_simmim.py 64): INFO output/btrformer/default/ckpt_epoch_29.pth saved !!!
+[2026-06-19 18:14:02 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.957 (1.957)	Loss 0.1460 (0.1460)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:14:07 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:14:07 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:14:07 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:14:07 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:14:07 btrformer] (main_ft.py 168): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:14:07 btrformer] (main_ft.py 170): INFO Max accuracy: 99.17%
+[2026-06-19 18:14:07 btrformer] (main_ft.py 172): INFO Max f1: 99.17%
+[2026-06-19 18:14:07 btrformer] (main_ft.py 176): INFO Training time 0:14:56
+[2026-06-19 18:23:06 btrformer] (main_ft.py 399): INFO Full config saved to output/btrformer/default/config.json
+[2026-06-19 18:23:06 btrformer] (main_ft.py 402): INFO AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: ''
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: ''
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 128
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed
+  IMG_SIZE: 32
+  INTERPOLATION: ''
+  MASK_PATCH_SIZE: 2
+  MASK_RATIO: 0.9
+  NUM_WORKERS: 4
+  PIN_MEMORY: true
+  ZIP_MODE: false
+ENABLE_AMP: true
+EVAL_MODE: true
+FUSED_LAYERNORM: false
+FUSED_WINDOW_PROCESS: false
+LOCAL_RANK: 0
+MODEL:
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NAME: btrformer
+  NUM_CLASSES: 3
+  PRETRAINED: ''
+  RESUME: output/btrformer/default/ckpt_epoch_29.pth
+  SIMMIM:
+    NORM_TARGET:
+      ENABLE: false
+      PATCH_SIZE: 47
+  SWIN:
+    APE: false
+    DEPTHS:
+    - 2
+    - 2
+    - 6
+    - 2
+    EMBED_DIM: 96
+    IN_CHANS: 1
+    MLP_RATIO: 4.0
+    NUM_HEADS:
+    - 3
+    - 6
+    - 12
+    - 24
+    PATCH_NORM: true
+    PATCH_SIZE: 2
+    QKV_BIAS: true
+    QK_SCALE: null
+    WINDOW_SIZE: 2
+  TYPE: swin
+OUTPUT: output/btrformer/default
+PRINT_FREQ: 10
+SAVE_FREQ: 100
+SEED: 0
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: true
+  BASE_LR: 0.000125
+  CLIP_GRAD: 5.0
+  EPOCHS: 30
+  LAYER_DECAY: 1.0
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+    MULTISTEPS: []
+    NAME: ''
+    WARMUP_PREFIX: true
+  MIN_LR: 1.25e-06
+  MOE:
+    SAVE_MASTER: false
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 5
+  WARMUP_LR: 1.25e-07
+  WEIGHT_DECAY: 0.05
+distributed: false
+
+[2026-06-19 18:23:06 btrformer] (main_ft.py 96): INFO Creating model:swin/btrformer
+[2026-06-19 18:23:06 btrformer] (main_ft.py 99): INFO SwinTransformer(
+  (patch_embed): PatchEmbed_raw(
+    (proj): Conv2d(1, 96, kernel_size=(2, 2), stride=(2, 2))
+    (norm): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): BasicLayer(
+      dim=96, input_resolution=(16, 16), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): Identity()
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.009)
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(16, 16), dim=96
+        (reduction): Linear(in_features=384, out_features=192, bias=False)
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (1): BasicLayer(
+      dim=192, input_resolution=(8, 8), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.018)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.027)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(8, 8), dim=192
+        (reduction): Linear(in_features=768, out_features=384, bias=False)
+        (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (2): BasicLayer(
+      dim=384, input_resolution=(4, 4), depth=6
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.036)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.045)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (2): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.055)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (3): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.064)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (4): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.073)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (5): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.082)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(4, 4), dim=384
+        (reduction): Linear(in_features=1536, out_features=768, bias=False)
+        (norm): LayerNorm((1536,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (3): BasicLayer(
+      dim=768, input_resolution=(2, 2), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.091)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.100)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+    )
+  )
+  (avgpool): AdaptiveAvgPool1d(output_size=1)
+  (head): Linear(in_features=768, out_features=3, bias=True)
+  (fc_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+)
+[2026-06-19 18:23:06 btrformer] (main_ft.py 111): INFO number of params: 27495357
+[2026-06-19 18:23:06 btrformer] (main_ft.py 114): INFO number of GFLOPs: 0.35524224
+[2026-06-19 18:23:06 btrformer] (utils_simmim.py 83): INFO All checkpoints founded in output/btrformer/default: ['ckpt_epoch_29.pth', 'ckpt_epoch_0.pth']
+[2026-06-19 18:23:06 btrformer] (utils_simmim.py 86): INFO The latest checkpoint founded: output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:23:06 btrformer] (main_ft.py 134): WARNING auto-resume changing resume file from output/btrformer/default/ckpt_epoch_29.pth to output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:23:06 btrformer] (main_ft.py 138): INFO auto resuming from output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:23:06 btrformer] (utils_simmim.py 9): INFO >>>>>>>>>> Resuming from output/btrformer/default/ckpt_epoch_29.pth ..........
+[2026-06-19 18:25:07 btrformer] (main_ft.py 399): INFO Full config saved to output/btrformer/default/config.json
+[2026-06-19 18:25:07 btrformer] (main_ft.py 402): INFO AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: ''
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: ''
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 128
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed
+  IMG_SIZE: 32
+  INTERPOLATION: ''
+  MASK_PATCH_SIZE: 2
+  MASK_RATIO: 0.9
+  NUM_WORKERS: 4
+  PIN_MEMORY: true
+  ZIP_MODE: false
+ENABLE_AMP: true
+EVAL_MODE: true
+FUSED_LAYERNORM: false
+FUSED_WINDOW_PROCESS: false
+LOCAL_RANK: 0
+MODEL:
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NAME: btrformer
+  NUM_CLASSES: 3
+  PRETRAINED: ''
+  RESUME: output/btrformer/default/ckpt_epoch_29.pth
+  SIMMIM:
+    NORM_TARGET:
+      ENABLE: false
+      PATCH_SIZE: 47
+  SWIN:
+    APE: false
+    DEPTHS:
+    - 2
+    - 2
+    - 6
+    - 2
+    EMBED_DIM: 96
+    IN_CHANS: 1
+    MLP_RATIO: 4.0
+    NUM_HEADS:
+    - 3
+    - 6
+    - 12
+    - 24
+    PATCH_NORM: true
+    PATCH_SIZE: 2
+    QKV_BIAS: true
+    QK_SCALE: null
+    WINDOW_SIZE: 2
+  TYPE: swin
+OUTPUT: output/btrformer/default
+PRINT_FREQ: 10
+SAVE_FREQ: 100
+SEED: 0
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: true
+  BASE_LR: 0.000125
+  CLIP_GRAD: 5.0
+  EPOCHS: 30
+  LAYER_DECAY: 1.0
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+    MULTISTEPS: []
+    NAME: ''
+    WARMUP_PREFIX: true
+  MIN_LR: 1.25e-06
+  MOE:
+    SAVE_MASTER: false
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 5
+  WARMUP_LR: 1.25e-07
+  WEIGHT_DECAY: 0.05
+distributed: false
+
+[2026-06-19 18:25:07 btrformer] (main_ft.py 96): INFO Creating model:swin/btrformer
+[2026-06-19 18:25:07 btrformer] (main_ft.py 99): INFO SwinTransformer(
+  (patch_embed): PatchEmbed_raw(
+    (proj): Conv2d(1, 96, kernel_size=(2, 2), stride=(2, 2))
+    (norm): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): BasicLayer(
+      dim=96, input_resolution=(16, 16), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): Identity()
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.009)
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(16, 16), dim=96
+        (reduction): Linear(in_features=384, out_features=192, bias=False)
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (1): BasicLayer(
+      dim=192, input_resolution=(8, 8), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.018)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.027)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(8, 8), dim=192
+        (reduction): Linear(in_features=768, out_features=384, bias=False)
+        (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (2): BasicLayer(
+      dim=384, input_resolution=(4, 4), depth=6
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.036)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.045)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (2): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.055)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (3): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.064)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (4): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.073)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (5): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.082)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(4, 4), dim=384
+        (reduction): Linear(in_features=1536, out_features=768, bias=False)
+        (norm): LayerNorm((1536,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (3): BasicLayer(
+      dim=768, input_resolution=(2, 2), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.091)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.100)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+    )
+  )
+  (avgpool): AdaptiveAvgPool1d(output_size=1)
+  (head): Linear(in_features=768, out_features=3, bias=True)
+  (fc_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+)
+[2026-06-19 18:25:07 btrformer] (main_ft.py 111): INFO number of params: 27495357
+[2026-06-19 18:25:07 btrformer] (main_ft.py 114): INFO number of GFLOPs: 0.35524224
+[2026-06-19 18:25:07 btrformer] (utils_simmim.py 83): INFO All checkpoints founded in output/btrformer/default: ['ckpt_epoch_29.pth', 'ckpt_epoch_0.pth']
+[2026-06-19 18:25:07 btrformer] (utils_simmim.py 86): INFO The latest checkpoint founded: output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:25:07 btrformer] (main_ft.py 134): WARNING auto-resume changing resume file from output/btrformer/default/ckpt_epoch_29.pth to output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:25:07 btrformer] (main_ft.py 138): INFO auto resuming from output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:25:07 btrformer] (utils_simmim.py 9): INFO >>>>>>>>>> Resuming from output/btrformer/default/ckpt_epoch_29.pth ..........
+[2026-06-19 18:25:07 btrformer] (utils_simmim.py 22): INFO <All keys matched successfully>
+[2026-06-19 18:25:09 btrformer] (main_ft.py 302): INFO Test: [0/1]	Time 1.840 (1.840)	Loss 0.1460 (0.1460)	Acc@1 98.333 (98.333)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:25:14 btrformer] (main_ft.py 319): INFO  * Acc@1 98.333 Acc@5 100.000
+[2026-06-19 18:25:14 btrformer] (main_ft.py 320): INFO * Pre 0.9841 Rec 0.9833 F1 0.9833
+[2026-06-19 18:25:14 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       1.00      1.00      1.00        40
+         Tor       0.95      1.00      0.98        40
+         VPN       1.00      0.95      0.97        40
+
+    accuracy                           0.98       120
+   macro avg       0.98      0.98      0.98       120
+weighted avg       0.98      0.98      0.98       120
+
+[2026-06-19 18:25:14 btrformer] (main_ft.py 329): INFO 
+[[40  0  0]
+ [ 0 40  0]
+ [ 0  2 38]]
+[2026-06-19 18:25:14 btrformer] (main_ft.py 145): INFO Accuracy of the network on the 120 test images: 98.3%
+[2026-06-19 18:29:16 btrformer] (main_ft.py 399): INFO Full config saved to output/btrformer/default/config.json
+[2026-06-19 18:29:16 btrformer] (main_ft.py 402): INFO AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: ''
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: ''
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 128
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed
+  IMG_SIZE: 32
+  INTERPOLATION: ''
+  MASK_PATCH_SIZE: 2
+  MASK_RATIO: 0.9
+  NUM_WORKERS: 4
+  PIN_MEMORY: true
+  ZIP_MODE: false
+ENABLE_AMP: true
+EVAL_MODE: false
+FUSED_LAYERNORM: false
+FUSED_WINDOW_PROCESS: false
+LOCAL_RANK: 0
+MODEL:
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NAME: btrformer
+  NUM_CLASSES: 3
+  PRETRAINED: ''
+  RESUME: ''
+  SIMMIM:
+    NORM_TARGET:
+      ENABLE: false
+      PATCH_SIZE: 47
+  SWIN:
+    APE: false
+    DEPTHS:
+    - 2
+    - 2
+    - 6
+    - 2
+    EMBED_DIM: 96
+    IN_CHANS: 1
+    MLP_RATIO: 4.0
+    NUM_HEADS:
+    - 3
+    - 6
+    - 12
+    - 24
+    PATCH_NORM: true
+    PATCH_SIZE: 2
+    QKV_BIAS: true
+    QK_SCALE: null
+    WINDOW_SIZE: 2
+  TYPE: swin
+OUTPUT: output/btrformer/default
+PRINT_FREQ: 10
+SAVE_FREQ: 100
+SEED: 0
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: true
+  BASE_LR: 0.000125
+  CLIP_GRAD: 5.0
+  EPOCHS: 30
+  LAYER_DECAY: 1.0
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+    MULTISTEPS: []
+    NAME: cosine
+    WARMUP_PREFIX: true
+  MIN_LR: 1.25e-06
+  MOE:
+    SAVE_MASTER: false
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 5
+  WARMUP_LR: 1.25e-07
+  WEIGHT_DECAY: 0.05
+distributed: false
+
+[2026-06-19 18:29:16 btrformer] (main_ft.py 96): INFO Creating model:swin/btrformer
+[2026-06-19 18:29:17 btrformer] (main_ft.py 99): INFO SwinTransformer(
+  (patch_embed): PatchEmbed_raw(
+    (proj): Conv2d(1, 96, kernel_size=(2, 2), stride=(2, 2))
+    (norm): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): BasicLayer(
+      dim=96, input_resolution=(16, 16), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): Identity()
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.009)
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(16, 16), dim=96
+        (reduction): Linear(in_features=384, out_features=192, bias=False)
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (1): BasicLayer(
+      dim=192, input_resolution=(8, 8), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.018)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.027)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(8, 8), dim=192
+        (reduction): Linear(in_features=768, out_features=384, bias=False)
+        (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (2): BasicLayer(
+      dim=384, input_resolution=(4, 4), depth=6
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.036)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.045)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (2): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.055)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (3): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.064)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (4): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.073)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (5): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.082)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(4, 4), dim=384
+        (reduction): Linear(in_features=1536, out_features=768, bias=False)
+        (norm): LayerNorm((1536,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (3): BasicLayer(
+      dim=768, input_resolution=(2, 2), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.091)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.100)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+    )
+  )
+  (avgpool): AdaptiveAvgPool1d(output_size=1)
+  (head): Linear(in_features=768, out_features=3, bias=True)
+  (fc_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+)
+[2026-06-19 18:29:17 btrformer] (main_ft.py 111): INFO number of params: 27495357
+[2026-06-19 18:29:17 btrformer] (main_ft.py 114): INFO number of GFLOPs: 0.35524224
+[2026-06-19 18:29:17 btrformer] (utils_simmim.py 83): INFO All checkpoints founded in output/btrformer/default: ['ckpt_epoch_29.pth', 'ckpt_epoch_0.pth']
+[2026-06-19 18:29:17 btrformer] (utils_simmim.py 86): INFO The latest checkpoint founded: output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:29:17 btrformer] (main_ft.py 138): INFO auto resuming from output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:29:17 btrformer] (utils_simmim.py 9): INFO >>>>>>>>>> Resuming from output/btrformer/default/ckpt_epoch_29.pth ..........
+[2026-06-19 18:29:17 btrformer] (utils_simmim.py 22): INFO <All keys matched successfully>
+[2026-06-19 18:29:17 btrformer] (utils_simmim.py 35): INFO => loaded successfully 'output/btrformer/default/ckpt_epoch_29.pth' (epoch 29)
+[2026-06-19 18:29:19 btrformer] (main_ft.py 302): INFO Test: [0/2]	Time 1.858 (1.858)	Loss 0.1418 (0.1418)	Acc@1 99.219 (99.219)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:29:29 btrformer] (main_ft.py 319): INFO  * Acc@1 98.870 Acc@5 100.000
+[2026-06-19 18:29:29 btrformer] (main_ft.py 320): INFO * Pre 0.9888 Rec 0.9887 F1 0.9887
+[2026-06-19 18:29:29 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      0.98      0.98        59
+         Tor       0.98      1.00      0.99        59
+         VPN       1.00      0.98      0.99        59
+
+    accuracy                           0.99       177
+   macro avg       0.99      0.99      0.99       177
+weighted avg       0.99      0.99      0.99       177
+
+[2026-06-19 18:29:29 btrformer] (main_ft.py 329): INFO 
+[[58  1  0]
+ [ 0 59  0]
+ [ 1  0 58]]
+[2026-06-19 18:29:29 btrformer] (main_ft.py 145): INFO Accuracy of the network on the 177 test images: 98.9%
+[2026-06-19 18:29:29 btrformer] (main_ft.py 158): INFO Start training
+[2026-06-19 18:29:29 btrformer] (main_ft.py 176): INFO Training time 0:00:00
+[2026-06-19 18:29:46 btrformer] (main_ft.py 399): INFO Full config saved to output/btrformer/default/config.json
+[2026-06-19 18:29:46 btrformer] (main_ft.py 402): INFO AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: ''
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: ''
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 128
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed
+  IMG_SIZE: 32
+  INTERPOLATION: ''
+  MASK_PATCH_SIZE: 2
+  MASK_RATIO: 0.9
+  NUM_WORKERS: 4
+  PIN_MEMORY: true
+  ZIP_MODE: false
+ENABLE_AMP: true
+EVAL_MODE: true
+FUSED_LAYERNORM: false
+FUSED_WINDOW_PROCESS: false
+LOCAL_RANK: 0
+MODEL:
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NAME: btrformer
+  NUM_CLASSES: 3
+  PRETRAINED: ''
+  RESUME: output/btrformer/default/ckpt_epoch_29.pth
+  SIMMIM:
+    NORM_TARGET:
+      ENABLE: false
+      PATCH_SIZE: 47
+  SWIN:
+    APE: false
+    DEPTHS:
+    - 2
+    - 2
+    - 6
+    - 2
+    EMBED_DIM: 96
+    IN_CHANS: 1
+    MLP_RATIO: 4.0
+    NUM_HEADS:
+    - 3
+    - 6
+    - 12
+    - 24
+    PATCH_NORM: true
+    PATCH_SIZE: 2
+    QKV_BIAS: true
+    QK_SCALE: null
+    WINDOW_SIZE: 2
+  TYPE: swin
+OUTPUT: output/btrformer/default
+PRINT_FREQ: 10
+SAVE_FREQ: 100
+SEED: 0
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: true
+  BASE_LR: 0.000125
+  CLIP_GRAD: 5.0
+  EPOCHS: 30
+  LAYER_DECAY: 1.0
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    GAMMA: 0.1
+    MULTISTEPS: []
+    NAME: ''
+    WARMUP_PREFIX: true
+  MIN_LR: 1.25e-06
+  MOE:
+    SAVE_MASTER: false
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 5
+  WARMUP_LR: 1.25e-07
+  WEIGHT_DECAY: 0.05
+distributed: false
+
+[2026-06-19 18:29:46 btrformer] (main_ft.py 96): INFO Creating model:swin/btrformer
+[2026-06-19 18:29:47 btrformer] (main_ft.py 99): INFO SwinTransformer(
+  (patch_embed): PatchEmbed_raw(
+    (proj): Conv2d(1, 96, kernel_size=(2, 2), stride=(2, 2))
+    (norm): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+  )
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): BasicLayer(
+      dim=96, input_resolution=(16, 16), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): Identity()
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=96, input_resolution=(16, 16), num_heads=3, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=96, window_size=(2, 2), num_heads=3
+            (qkv): Linear(in_features=96, out_features=288, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=96, out_features=96, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.009)
+          (norm2): LayerNorm((96,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=96, out_features=384, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=384, out_features=96, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(16, 16), dim=96
+        (reduction): Linear(in_features=384, out_features=192, bias=False)
+        (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (1): BasicLayer(
+      dim=192, input_resolution=(8, 8), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.018)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=192, input_resolution=(8, 8), num_heads=6, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=192, window_size=(2, 2), num_heads=6
+            (qkv): Linear(in_features=192, out_features=576, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=192, out_features=192, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.027)
+          (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=192, out_features=768, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=768, out_features=192, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(8, 8), dim=192
+        (reduction): Linear(in_features=768, out_features=384, bias=False)
+        (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (2): BasicLayer(
+      dim=384, input_resolution=(4, 4), depth=6
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.036)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.045)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (2): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.055)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (3): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.064)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (4): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.073)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (5): SwinTransformerBlock(
+          dim=384, input_resolution=(4, 4), num_heads=12, window_size=2, shift_size=1, mlp_ratio=4.0
+          (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=384, window_size=(2, 2), num_heads=12
+            (qkv): Linear(in_features=384, out_features=1152, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=384, out_features=384, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.082)
+          (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=384, out_features=1536, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=1536, out_features=384, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (downsample): PatchMerging(
+        input_resolution=(4, 4), dim=384
+        (reduction): Linear(in_features=1536, out_features=768, bias=False)
+        (norm): LayerNorm((1536,), eps=1e-06, elementwise_affine=True, bias=True)
+      )
+    )
+    (3): BasicLayer(
+      dim=768, input_resolution=(2, 2), depth=2
+      (blocks): ModuleList(
+        (0): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.091)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (1): SwinTransformerBlock(
+          dim=768, input_resolution=(2, 2), num_heads=24, window_size=2, shift_size=0, mlp_ratio=4.0
+          (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (attn): WindowAttention(
+            dim=768, window_size=(2, 2), num_heads=24
+            (qkv): Linear(in_features=768, out_features=2304, bias=True)
+            (attn_drop): Dropout(p=0.0, inplace=False)
+            (proj): Linear(in_features=768, out_features=768, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+          (drop_path): DropPath(drop_prob=0.100)
+          (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (act): GELU(approximate='none')
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+    )
+  )
+  (avgpool): AdaptiveAvgPool1d(output_size=1)
+  (head): Linear(in_features=768, out_features=3, bias=True)
+  (fc_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True, bias=True)
+)
+[2026-06-19 18:29:47 btrformer] (main_ft.py 111): INFO number of params: 27495357
+[2026-06-19 18:29:47 btrformer] (main_ft.py 114): INFO number of GFLOPs: 0.35524224
+[2026-06-19 18:29:47 btrformer] (utils_simmim.py 83): INFO All checkpoints founded in output/btrformer/default: ['ckpt_epoch_29.pth', 'ckpt_epoch_0.pth']
+[2026-06-19 18:29:47 btrformer] (utils_simmim.py 86): INFO The latest checkpoint founded: output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:29:47 btrformer] (main_ft.py 134): WARNING auto-resume changing resume file from output/btrformer/default/ckpt_epoch_29.pth to output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:29:47 btrformer] (main_ft.py 138): INFO auto resuming from output/btrformer/default/ckpt_epoch_29.pth
+[2026-06-19 18:29:47 btrformer] (utils_simmim.py 9): INFO >>>>>>>>>> Resuming from output/btrformer/default/ckpt_epoch_29.pth ..........
+[2026-06-19 18:29:47 btrformer] (utils_simmim.py 22): INFO <All keys matched successfully>
+[2026-06-19 18:29:49 btrformer] (main_ft.py 302): INFO Test: [0/2]	Time 1.835 (1.835)	Loss 0.1418 (0.1418)	Acc@1 99.219 (99.219)	Acc@5 100.000 (100.000)	Mem 0MB
+[2026-06-19 18:29:59 btrformer] (main_ft.py 319): INFO  * Acc@1 98.870 Acc@5 100.000
+[2026-06-19 18:29:59 btrformer] (main_ft.py 320): INFO * Pre 0.9888 Rec 0.9887 F1 0.9887
+[2026-06-19 18:29:59 btrformer] (main_ft.py 328): INFO 
+              precision    recall  f1-score   support
+
+      Normal       0.98      0.98      0.98        59
+         Tor       0.98      1.00      0.99        59
+         VPN       1.00      0.98      0.99        59
+
+    accuracy                           0.99       177
+   macro avg       0.99      0.99      0.99       177
+weighted avg       0.99      0.99      0.99       177
+
+[2026-06-19 18:29:59 btrformer] (main_ft.py 329): INFO 
+[[58  1  0]
+ [ 0 59  0]
+ [ 1  0 58]]
+[2026-06-19 18:29:59 btrformer] (main_ft.py 145): INFO Accuracy of the network on the 177 test images: 98.9%
