@@ -131,7 +131,7 @@ def handle_raw_dataset(pcapng_or_pcap_path, output_split_path, keep_only_tls):
 
 if __name__ == '__main__':
     # Point it strictly to your main data folder using an absolute path to be perfectly safe
-    root_dir = '/Users/raghavdutta/Documents/ETA/BTRFormer/Dat/'
+    root_dir = '/ETA/BTRFormer/Data/'
     
     # This will automatically read from /content/raghav/BTRFormer/data/raw/
     raw_root_dir = os.path.join(root_dir, 'raw')

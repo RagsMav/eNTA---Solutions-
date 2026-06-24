@@ -1,46 +1,94 @@
-# BTRFormer
+# How to Train Yourself
+<br>
 
-This repository contains the code for the paper:
-BTRFormer: Hierarchical Learning of Encrypted Traffic Using a Masked Autoencoder with Block-Based Traffic Representation.
-In 2025 IEEE 33rd International Conference on Network Protocols (ICNP)
+Open a terminal window and navigate to BTRFormer repo ( after copying this repo)
+<br>
+```
+mkdir Data
+cd Data
+mkdir raw
+cd raw
+mkdir Normal
+mkdir Tor
+mkdir VPN
+```
+<br>
 
-# Overview
-<img width="2998" height="1314" alt="image" src="https://github.com/user-attachments/assets/138ae867-a46b-43cc-bb08-b5cd76ac3294" />
-The overview of BTRFormer framework.
+Run these commands one after another
+<br>
+Now update the paths in the following files
+<br>
+1) in data_generation.py -> root_dir at the end of the file -> to your path for the Data folder
+2) in config.py -> _C.DATA.DATA_PATH -> to your path
+<br>
+When adding files make sure to name them as exactly "profile_1_Tor", "profile_2_VPN" and "profile_3_Normal" and their extensions pcap 
+add these pcaps to respective folders in the Document.
 
-## Usage
+Here only 3 classes because in config.py
+```
+_C.MODEL.NUM_CLASSES = 3
+```
+This was set to 3, it can be changed to any number provided you have sufficient label data
+<br>
 
-### Install 
+Navigate using cd to the data process folder
+Run the data_generation.py folder
+<br>
+##### Important - (if running on linux then only run this before running data_generation.py)
+```
+sudo apt update
+sudo apt install mono-complete
+```
+After this run
+```
+python3 data_generation.py
+```
+This should split your pcaps and create a splitcap folder, where your 1 large pcap would be split into flows
+<br>
+Create the train and test folders
+```
+mkdir BTRFormer/Data/processed
+cd BTRFormer/Data/processed
+mkdir train
+mkdir test
+```
+Now run the BTR_generator.py
+```
+# 1. Force create the exact directories so Linux can't complain
+mkdir -p BTRFormer/Data/processed/train/Normal
+mkdir -p BTRFormer/Data/processed/train/Tor
+mkdir -p BTRFormer/Data/processed/train/VPN
 
-```sh
-git clone git@github.com:yyyjn/BTRFormer.git
+# 2. Run the script pointing to the correct 'Data' output folder
+python BTR_generator.py --flows_pcap_path /BTRFormer/Data/splitcap/ --output_dir /BTRFormer/Data/processed/train/
 ```
 
-**Note**
-
-- Python 3.9 is required.
-
-
-## Contact
-If you have any questions or suggestions, feel free to contact:
-
-- [Junnan Yin](https://github.com/yyyjn/yyyjn.github.io) (yinjn2023@zgclab.edu.cn)
-
-## Citation
-If you find this repo useful, please cite our paper.
-```bibtex
-@inproceedings{yin2025btrformer,
-  title={BTRFormer: Hierarchical Learning of Encrypted Traffic Using a Masked Autoencoder with Block-Based Traffic Representation},
-  author={Yin, Junnan and Cui, Lei and Hao, Zhiyu and Sun, Jiawei and Liu, Peng and Yun, Xiaochun},
-  booktitle={2025 IEEE 33rd International Conference on Network Protocols (ICNP)},
-  pages={1--12},
-  year={2025},
-  organization={IEEE}
-}
+Instead of the BTRFormer/Data/processed/train/. write write the full path, where you want to create the 3 processed folders
+<br>
+Move the balance_and_split.py to processed folder
+<br>
+Now run the balance_and_split.py to make the data even
+```
+python balance_and_split.py --train train --test test --delete-excess
 ```
 
-Contributions via pull requests are welcome and appreciated.
+Instead of the BTRFormer/Data/processed/train/. write write the full path, where you want to create the 3 processed folders
+<br>
+Now run the Bash script run_btrformer_training.bash.
+<br>
+I have uploaded a hugging face model link
+```
+https://huggingface.co/RagsMav/eNTA-Solutions/tree/main
+```
 
-## Acknowledgements
+### Only for Tor, VPN and Normal Classification
+Uplaod your .pth model in Pipeline/output/btrformer/default
+<br>
+Upload the file to analyze in the Pipeline/Input folder
+<br>
+Now go into the Pipeline folder from the terminal using cd.
+```
+python pcap_btrformer.py --pcap Input/Tor.pcap --output Input/results.csv
+```
+Run this and wait some seconds it will give you the CSV which has the confidence scores
 
-We would like to thank all the authors of the referenced papers.

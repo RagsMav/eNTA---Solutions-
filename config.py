@@ -15,7 +15,7 @@ _C.BASE = ['']
 # -----------------------------------------------------------------------------
 _C.DATA = CN()
 _C.DATA.BATCH_SIZE = 16
-_C.DATA.DATA_PATH = '/Users/raghavdutta/Documents/ETA/Model/BTRFormer/Dat/processed'
+_C.DATA.DATA_PATH = '/Model/BTRFormer/Dat/processed'
 _C.DATA.DATASET = 'imagenet'
 _C.DATA.IMG_SIZE = 32
 _C.DATA.INTERPOLATION = ''
