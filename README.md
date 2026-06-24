@@ -84,6 +84,8 @@ https://huggingface.co/RagsMav/eNTA-Solutions/tree/main
 ### Only for Tor, VPN and Normal Classification
 Uplaod your .pth model in Pipeline/output/btrformer/default
 <br>
+If a folder named output doesnt exist make the entire output then btrformer inside it and then default inside it
+<br>
 Upload the file to analyze in the Pipeline/Input folder
 <br>
 Now go into the Pipeline folder from the terminal using cd.
