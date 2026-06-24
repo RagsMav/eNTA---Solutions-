@@ -81,3 +81,14 @@ I have uploaded a hugging face model link
 https://huggingface.co/RagsMav/eNTA-Solutions/tree/main
 ```
 
+### Only for Tor, VPN and Normal Classification
+Uplaod your .pth model in Pipeline/output/btrformer/default
+<br>
+Upload the file to analyze in the Pipeline/Input folder
+<br>
+Now go into the Pipeline folder from the terminal using cd.
+```
+python pcap_btrformer.py --pcap Input/Tor.pcap --output Input/results.csv
+```
+Run this and wait some seconds it will give you the CSV which has the confidence scores
+
