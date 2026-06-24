@@ -9,3 +9,7 @@ pyshark
 pandas
 dpkt
 scikit-learn 
+psutil
+torch
+torchaudio
+torchvision
