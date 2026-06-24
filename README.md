@@ -91,4 +91,10 @@ Now go into the Pipeline folder from the terminal using cd.
 python pcap_btrformer.py --pcap Input/Tor.pcap --output Input/results.csv
 ```
 Run this and wait some seconds it will give you the CSV which has the confidence scores
+<br>
+#### How to run the bash file run_inference
 
+```
+chmod +x run_inference.bash
+./run_inference.bash your_capture.pcap
+```
